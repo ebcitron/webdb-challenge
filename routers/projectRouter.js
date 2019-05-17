@@ -26,16 +26,15 @@ projectRouter.get("/:id", async (req, res) => {
   }
 });
 
-//Get actions by project Id
-
-// projectRouter.get("/actions/:id", async (req, res) => {
-//   try {
-//     const project = await Project.getProjectActions(req.params.id);
-//     res.status(200).json({ project });
-//   } catch (error) {
-//     res.status(500).json({ message: "Error retrieving actions by ID" });
-//   }
-// });
+projectRouter.get("/actions/:id", async (req, res) => {
+  try {
+    const projectActions = await Project.getProjectActions(req.params.id);
+    const project = await Project.getProject(req.params.id);
+    res.status(200).json({ ...project, projectActions });
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving actions by ID" });
+  }
+});
 
 //Post new Project
 
