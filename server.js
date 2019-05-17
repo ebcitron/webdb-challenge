@@ -12,4 +12,5 @@ server.use("/api/action", actionRouter);
 server.get("/", (req, res) => {
   res.send("Welcome to the server!");
 });
+
 module.exports = server;
