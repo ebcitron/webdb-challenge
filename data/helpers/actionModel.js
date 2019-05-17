@@ -3,7 +3,8 @@ const mappers = require("./mappers");
 
 module.exports = {
 getActions,
-addAction
+addAction,
+getActionsByProject
 };
 
 
@@ -13,4 +14,9 @@ function getActions(){
 
 function addAction(action){
   return db("actions").insert(action);
+}
+
+function getActionsByProject(id){
+  return db("actions")
+  .where({project_id: id});
 }

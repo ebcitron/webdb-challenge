@@ -39,16 +39,16 @@ actionRouter.get("/", async (req, res) => {
 //Post new action
 
 actionRouter.post("/", async (req, res) => {
-try{
-    const { project_id, description, notes, completed} = req.body;
+  try {
+    const { project_id, description, notes, completed } = req.body;
     if (!project_id) {
       res.status(400).json({ message: "must be associated with a project ID" });
     }
     if (!notes || !description || !completed) {
       res.status(404).json({ message: "Needs to have notes and description" });
     } else {
-    const [id] = await Action.addAction(req.body);
-    const action = await Action.getActions(id);
+      const [id] = await Action.addAction(req.body);
+      const action = await Action.getActions(id);
     }
   } catch (error) {
     console.log(error);
@@ -77,6 +77,5 @@ try{
 //     res.status(500).json({ message: "Error deleting action" });
 //   }
 // });
-
 
 module.exports = actionRouter;
