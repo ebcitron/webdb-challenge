@@ -1,6 +1,6 @@
 const express = require("express");
-const Project = require("./data/helpers/projectModel");
-const Actions = require("./data/helpers/actionModel");
+const Project = require("../data/helpers/projectModel");
+const Actions = require("../data/helpers/actionModel");
 
 const projectRouter = express.Router();
 
