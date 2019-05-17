@@ -8,7 +8,7 @@ const projectRouter = express.Router();
 
 projectRouter.get("/", async (req, res) => {
   try {
-    const project = await Project.get();
+    const project = await Project.getProjects();
     res.status(200).json({ project });
   } catch (error) {
     res.status(500).json({ message: "Error retrieving projects" });
@@ -19,7 +19,7 @@ projectRouter.get("/", async (req, res) => {
 
 projectRouter.get("/:id", async (req, res) => {
   try {
-    const project = await Project.get(req.params.id);
+    const project = await Project.getProject(req.params.id);
     res.status(200).json({ project });
   } catch (error) {
     res.status(500).json({ message: "Error retrieving Project" });
@@ -28,20 +28,22 @@ projectRouter.get("/:id", async (req, res) => {
 
 //Get actions by project Id
 
-projectRouter.get("/actions/:id", async (req, res) => {
-  try {
-    const project = await Project.getProjectActions(req.params.id);
-    res.status(200).json({ project });
-  } catch (error) {
-    res.status(500).json({ message: "Error retrieving actions by ID" });
-  }
-});
+// projectRouter.get("/actions/:id", async (req, res) => {
+//   try {
+//     const project = await Project.getProjectActions(req.params.id);
+//     res.status(200).json({ project });
+//   } catch (error) {
+//     res.status(500).json({ message: "Error retrieving actions by ID" });
+//   }
+// });
 
 //Post new Project
 
 projectRouter.post("/", async (req, res) => {
+  const { name, description, completed } = req.body;
   try {
-    const project = await Project.insert(req.body);
+    const [id] = await Project.addProject(req.body);
+    const project = await Project.getProject(id);
     res.status(200).json({ project });
   } catch (error) {
     console.log(error);

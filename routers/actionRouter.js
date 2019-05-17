@@ -18,37 +18,37 @@ const actionRouter = express.Router();
 
 actionRouter.get("/", async (req, res) => {
   try {
-    const action = await Action.get();
+    const action = await Action.getActions();
     res.status(200).json({ action });
   } catch (error) {
     res.status(500).json({ message: "Error retrieving actions" });
   }
 });
 
-//Get actions by action_id
+// //Get actions by action_id
 
-actionRouter.get("/:id", async (req, res) => {
-  try {
-    const action = await Action.get(req.params.id);
-    res.status(200).json({ action });
-  } catch (error) {
-    res.status(500).json({ message: "Error retrieving action" });
-  }
-});
+// actionRouter.get("/:id", async (req, res) => {
+//   try {
+//     const action = await Action.get(req.params.id);
+//     res.status(200).json({ action });
+//   } catch (error) {
+//     res.status(500).json({ message: "Error retrieving action" });
+//   }
+// });
 
 //Post new action
 
 actionRouter.post("/", async (req, res) => {
-  try {
-    const { project_id, description, notes } = req.body;
+try{
+    const { project_id, description, notes, completed} = req.body;
     if (!project_id) {
-      res.status(400).json({ message: "No project with this ID" });
+      res.status(400).json({ message: "must be associated with a project ID" });
     }
-    if (!notes || !description) {
+    if (!notes || !description || !completed) {
       res.status(404).json({ message: "Needs to have notes and description" });
     } else {
-      const action = await Action.insert(req.body);
-      res.status(200).json(action);
+    const [id] = await Action.addAction(req.body);
+    const action = await Action.getActions(id);
     }
   } catch (error) {
     console.log(error);
@@ -58,24 +58,25 @@ actionRouter.post("/", async (req, res) => {
 
 //Put action by ID
 
-actionRouter.put("/:id", async (req, res) => {
-  try {
-    const action = await Action.update(req.params.id, req.body);
-    res.status(200).json({ action });
-  } catch (error) {
-    res.status(500).json({ message: "Error editing action" });
-  }
-});
+// actionRouter.put("/:id", async (req, res) => {
+//   try {
+//     const action = await Action.update(req.params.id, req.body);
+//     res.status(200).json({ action });
+//   } catch (error) {
+//     res.status(500).json({ message: "Error editing action" });
+//   }
+// });
 
-//Delete action by ID
+// //Delete action by ID
 
-actionRouter.delete("/:id", async (req, res) => {
-  try {
-    const action = await Action.remove(req.params.id);
-    res.status(200).json({ message: "action was deleted" });
-  } catch (error) {
-    res.status(500).json({ message: "Error deleting action" });
-  }
-});
+// actionRouter.delete("/:id", async (req, res) => {
+//   try {
+//     const action = await Action.remove(req.params.id);
+//     res.status(200).json({ message: "action was deleted" });
+//   } catch (error) {
+//     res.status(500).json({ message: "Error deleting action" });
+//   }
+// });
+
 
 module.exports = actionRouter;
