@@ -49,6 +49,7 @@ actionRouter.post("/", async (req, res) => {
     } else {
       const [id] = await Action.addAction(req.body);
       const action = await Action.getActions(id);
+    res.status(201).json(action);
     }
   } catch (error) {
     console.log(error);
